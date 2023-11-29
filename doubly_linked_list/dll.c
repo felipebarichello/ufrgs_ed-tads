@@ -1,6 +1,6 @@
+#include <stdlib.h>
+#include <stdio.h>
 #include "dll.h"
-#include "stdlib.h"
-#include "stdio.h"
 
 
 DLLNode* DLLInsert(DLLNode** head, DLLData data) {

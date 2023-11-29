@@ -1,5 +1,5 @@
+#include <stdlib.h>
 #include "stack.h"
-#include "stdlib.h"
 
 
 Stack StackCreate(StackData* data, int limit) {
