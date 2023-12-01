@@ -71,7 +71,7 @@ BSTNode* BSTSearch(BinarySearchTree tree, BSTData data) {
 
 // Função recursiva interna para BSTForEach()
 // Não exposta no header
-int _BSTForEach(BSTNode* node, enum Traversal traversal, enum Side order, int (*operation)(BSTNode* node)) {
+int _BSTForEach(BSTNode* node, enum BSTTraversal traversal, enum BSTSide order, int (*operation)(BSTNode* node)) {
     if (!node) {
         return 0;
     }
@@ -80,41 +80,41 @@ int _BSTForEach(BSTNode* node, enum Traversal traversal, enum Side order, int (*
     BSTNode* second_child;
 
     switch (order) {
-        case LEFT: {
+        case BST_LEFT: {
             first_child = node->left;
             second_child = node->right;
             break;
         }
 
-        case RIGHT: {
+        case BST_RIGHT: {
             first_child = node->right;
             second_child = node->left;
             break;
         }
     }
 
-    if (traversal == TRAVERSAL_PRE)
+    if (traversal == BST_TRAVERSAL_PRE)
         if (operation(node))
             return 1;
 
     if (_BSTForEach(first_child, traversal, order, operation))
         return 1;
 
-    if (traversal == TRAVERSAL_IN)
+    if (traversal == BST_TRAVERSAL_IN)
         if (operation(node))
             return 1;
 
     if (_BSTForEach(second_child, traversal, order, operation))
         return 1;
 
-    if (traversal == TRAVERSAL_POST)
+    if (traversal == BST_TRAVERSAL_POST)
         if (operation(node))
             return 1;
     
     return 0;
 }
 
-int BSTForEach(BinarySearchTree tree, enum Traversal traversal, enum Side order, int (*operation)(BSTNode* node)) {
+int BSTForEach(BinarySearchTree tree, enum BSTTraversal traversal, enum BSTSide order, int (*operation)(BSTNode* node)) {
     return _BSTForEach(tree.root, traversal, order, operation);
 }
 
@@ -125,7 +125,7 @@ int _BSTPrintNode_print(BSTNode* node) {
     return 0;
 }
 
-void BSTPrintList(BinarySearchTree tree, enum Traversal traversal, enum Side order) {
+void BSTPrintList(BinarySearchTree tree, enum BSTTraversal traversal, enum BSTSide order) {
     printf("[ ");
     _BSTForEach(tree.root, traversal, order, _BSTPrintNode_print);
     printf("]\n");
@@ -137,7 +137,7 @@ int BSTRemove(BinarySearchTree* tree, BSTData data) {
     }
 
     int found = 0;
-    enum Side last_side;
+    enum BSTSide last_side;
     BSTNode* current_node = tree->root;
     BSTNode* parent_node = NULL;
 
@@ -145,11 +145,11 @@ int BSTRemove(BinarySearchTree* tree, BSTData data) {
         if (data < current_node->data) {
             parent_node = current_node;
             current_node = current_node->left;
-            last_side = LEFT;
+            last_side = BST_LEFT;
         } else if (data > current_node->data) {
             parent_node = current_node;
             current_node = current_node->right;
-            last_side = RIGHT;
+            last_side = BST_RIGHT;
         } else {
             found = 1;
             break;
@@ -204,12 +204,12 @@ int BSTRemove(BinarySearchTree* tree, BSTData data) {
         tree->root = substitution;
     } else {
         switch (last_side) {
-            case LEFT: {
+            case BST_LEFT: {
                 parent_node->left = substitution;
                 break;
             }
 
-            case RIGHT: {
+            case BST_RIGHT: {
                 parent_node->right = substitution;
                 break;
             }
@@ -228,6 +228,6 @@ int _BSTEmpty_free(BSTNode* node) {
 }
 
 void BSTEmpty(BinarySearchTree* tree) {
-    BSTForEach(*tree, TRAVERSAL_POST, LEFT, _BSTEmpty_free);
+    BSTForEach(*tree, BST_TRAVERSAL_POST, BST_LEFT, _BSTEmpty_free);
     tree->root = NULL;
 }

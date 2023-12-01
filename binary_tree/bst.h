@@ -16,15 +16,15 @@ typedef struct BinarySearchTree {
     BSTNode* root;
 } BinarySearchTree;
 
-enum Side {
-    LEFT,
-    RIGHT
+enum BSTSide {
+    BST_LEFT,
+    BST_RIGHT
 };
 
-enum Traversal {
-    TRAVERSAL_PRE,
-    TRAVERSAL_IN,
-    TRAVERSAL_POST
+enum BSTTraversal {
+    BST_TRAVERSAL_PRE,
+    BST_TRAVERSAL_IN,
+    BST_TRAVERSAL_POST
 };
 
 
@@ -58,11 +58,11 @@ BSTNode* BSTSearch(BinarySearchTree tree, BSTData data);
 // Não verifica se `tree` é NULL
 // Cuidado para não remover a raíz da árvore durante o caminhamento
 // Antes de usar, verifique se não há outras funções que possam fazer o que você quer, pois ela não é muito eficiente
-int BSTForEach(BinarySearchTree tree, enum Traversal traversal, enum Side order, int (*operation)(BSTNode* node));
+int BSTForEach(BinarySearchTree tree, enum BSTTraversal traversal, enum BSTSide order, int (*operation)(BSTNode* node));
 
 // Imprimir árvore
 // Encapsulamento sobre BSTForEach() para imprimir a árvore
-void BSTPrintList(BinarySearchTree tree, enum Traversal traversal, enum Side order);
+void BSTPrintList(BinarySearchTree tree, enum BSTTraversal traversal, enum BSTSide order);
 
 // Romover item da lista
 // Retorna 1 se encontrou o produto, 0 caso contrário
