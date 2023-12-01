@@ -1,10 +1,10 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "bt.h"
+#include "bst.h"
 
 
-BTNode* BTNewNode(BTData data) {
-    BTNode* new_node = (BTNode*) malloc(sizeof(BTNode));
+BSTNode* BSTNewNode(BSTData data) {
+    BSTNode* new_node = (BSTNode*) malloc(sizeof(BSTNode));
     new_node->data = data;
     new_node->left = NULL;
     new_node->right = NULL;
@@ -12,37 +12,37 @@ BTNode* BTNewNode(BTData data) {
     return new_node;
 }
 
-BinaryTree BTCreate() {
-    return (BinaryTree) { NULL };
+BinarySearchTree BSTCreate() {
+    return (BinarySearchTree) { NULL };
 }
 
-BinaryTree BTFromNode(BTNode* root) {
-    return (BinaryTree) { root };
+BinarySearchTree BSTFromNode(BSTNode* root) {
+    return (BinarySearchTree) { root };
 }
 
-BTData BTIsEmpty(BinaryTree tree) {
+BSTData BSTIsEmpty(BinarySearchTree tree) {
     return !tree.root;
 }
 
-BTNode* BTInsertOrdered(BinaryTree* tree, BTData data) {
-    if (BTIsEmpty(*tree)) {
-        tree->root = BTNewNode(data);
+BSTNode* BSTInsertOrdered(BinarySearchTree* tree, BSTData data) {
+    if (BSTIsEmpty(*tree)) {
+        tree->root = BSTNewNode(data);
         return tree->root;
     }
 
-    BTNode* current_node = tree->root;
+    BSTNode* current_node = tree->root;
 
     for (;;) {
         if (data < current_node->data) {
             if (!current_node->left) {
-                current_node->left = BTNewNode(data);
+                current_node->left = BSTNewNode(data);
                 return current_node->left;
             }
 
             current_node = current_node->left;
         } else if (data > current_node->data) {
             if (!current_node->right) {
-                current_node->right = BTNewNode(data);
+                current_node->right = BSTNewNode(data);
                 return current_node->right;
             }
 
@@ -53,8 +53,8 @@ BTNode* BTInsertOrdered(BinaryTree* tree, BTData data) {
     }
 }
 
-BTNode* BTSearch(BinaryTree tree, BTData data) {
-    BTNode* current_node = tree.root;
+BSTNode* BSTSearch(BinarySearchTree tree, BSTData data) {
+    BSTNode* current_node = tree.root;
 
     while (current_node) {
         if (data < current_node->data) {
@@ -69,15 +69,15 @@ BTNode* BTSearch(BinaryTree tree, BTData data) {
     return NULL;
 }
 
-// Função recursiva interna para BTForEach()
+// Função recursiva interna para BSTForEach()
 // Não exposta no header
-int _BTForEach(BTNode* node, enum Traversal traversal, enum Side order, int (*operation)(BTNode* node)) {
+int _BSTForEach(BSTNode* node, enum Traversal traversal, enum Side order, int (*operation)(BSTNode* node)) {
     if (!node) {
         return 0;
     }
 
-    BTNode* first_child;
-    BTNode* second_child;
+    BSTNode* first_child;
+    BSTNode* second_child;
 
     switch (order) {
         case LEFT: {
@@ -97,14 +97,14 @@ int _BTForEach(BTNode* node, enum Traversal traversal, enum Side order, int (*op
         if (operation(node))
             return 1;
 
-    if (_BTForEach(first_child, traversal, order, operation))
+    if (_BSTForEach(first_child, traversal, order, operation))
         return 1;
 
     if (traversal == TRAVERSAL_IN)
         if (operation(node))
             return 1;
 
-    if (_BTForEach(second_child, traversal, order, operation))
+    if (_BSTForEach(second_child, traversal, order, operation))
         return 1;
 
     if (traversal == TRAVERSAL_POST)
@@ -114,32 +114,32 @@ int _BTForEach(BTNode* node, enum Traversal traversal, enum Side order, int (*op
     return 0;
 }
 
-int BTForEach(BinaryTree tree, enum Traversal traversal, enum Side order, int (*operation)(BTNode* node)) {
-    return _BTForEach(tree.root, traversal, order, operation);
+int BSTForEach(BinarySearchTree tree, enum Traversal traversal, enum Side order, int (*operation)(BSTNode* node)) {
+    return _BSTForEach(tree.root, traversal, order, operation);
 }
 
-// Função interna para BTPrintList()
+// Função interna para BSTPrintList()
 // Não exposta no header
-int _BTPrintNode_print(BTNode* node) {
+int _BSTPrintNode_print(BSTNode* node) {
     printf("%d ", node->data);
     return 0;
 }
 
-void BTPrintList(BinaryTree tree, enum Traversal traversal, enum Side order) {
+void BSTPrintList(BinarySearchTree tree, enum Traversal traversal, enum Side order) {
     printf("[ ");
-    _BTForEach(tree.root, traversal, order, _BTPrintNode_print);
+    _BSTForEach(tree.root, traversal, order, _BSTPrintNode_print);
     printf("]\n");
 }
 
-int BTRemove(BinaryTree* tree, BTData data) {
-    if (BTIsEmpty(*tree)) {
+int BSTRemove(BinarySearchTree* tree, BSTData data) {
+    if (BSTIsEmpty(*tree)) {
         return 0;
     }
 
     int found = 0;
     enum Side last_side;
-    BTNode* current_node = tree->root;
-    BTNode* parent_node = NULL;
+    BSTNode* current_node = tree->root;
+    BSTNode* parent_node = NULL;
 
     while (current_node) {
         if (data < current_node->data) {
@@ -160,7 +160,7 @@ int BTRemove(BinaryTree* tree, BTData data) {
         return 0;
     }
 
-    BTNode* substitution;
+    BSTNode* substitution;
 
     if (current_node->left) {
         if (current_node->right) {  
@@ -168,14 +168,14 @@ int BTRemove(BinaryTree* tree, BTData data) {
 
             // Substituir o nodo atual pelo menor nodo da subárvore direita
 
-            BTNode* smallest_node = current_node->right;
+            BSTNode* smallest_node = current_node->right;
 
             if (!smallest_node->left) {
                 // O menor nodo da subárvore direita é o filho direito do nodo atual
                 
                 smallest_node->right = current_node->right;
             } else {
-                BTNode* smallest_node_parent = current_node;
+                BSTNode* smallest_node_parent = current_node;
                 
                 while (smallest_node->left) {
                     smallest_node_parent = smallest_node;
@@ -220,14 +220,14 @@ int BTRemove(BinaryTree* tree, BTData data) {
     return 1;
 }
 
-// Função interna para BTEmpty()
+// Função interna para BSTEmpty()
 // Não exposta no header
-int _BTEmpty_free(BTNode* node) {
+int _BSTEmpty_free(BSTNode* node) {
     free(node);
     return 0;
 }
 
-void BTEmpty(BinaryTree* tree) {
-    BTForEach(*tree, TRAVERSAL_POST, LEFT, _BTEmpty_free);
+void BSTEmpty(BinarySearchTree* tree) {
+    BSTForEach(*tree, TRAVERSAL_POST, LEFT, _BSTEmpty_free);
     tree->root = NULL;
 }

@@ -1,17 +1,17 @@
 #include <stdio.h>
-#include "bt.h"
+#include "bst.h"
 
 
 int main() {
-    BinaryTree tree = BTCreate();
+    BinarySearchTree tree = BSTCreate();
 
-    BTInsertOrdered(&tree, 5); //       5        |
-    BTInsertOrdered(&tree, 3); //     /   \      |
-    BTInsertOrdered(&tree, 7); //    3     7     |
-    BTInsertOrdered(&tree, 2); //   / \   / \    |
-    BTInsertOrdered(&tree, 4); //  2   4 6   8   |
-    BTInsertOrdered(&tree, 6); //                |
-    BTInsertOrdered(&tree, 8); //                |
+    BSTInsertOrdered(&tree, 5); //       5        |
+    BSTInsertOrdered(&tree, 3); //     /   \      |
+    BSTInsertOrdered(&tree, 7); //    3     7     |
+    BSTInsertOrdered(&tree, 2); //   / \   / \    |
+    BSTInsertOrdered(&tree, 4); //  2   4 6   8   |
+    BSTInsertOrdered(&tree, 6); //                |
+    BSTInsertOrdered(&tree, 8); //                |
 
     printf("O programa roda\n");
 
