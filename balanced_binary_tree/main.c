@@ -17,7 +17,5 @@ int main() {
 
     BBTPrintList(tree, BBT_TRAVERSAL_IN, BBT_LEFT);
 
-    printf("O programa roda\n");
-
     return 0;
 }
